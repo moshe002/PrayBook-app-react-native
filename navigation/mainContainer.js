@@ -14,7 +14,7 @@ import AboutUsScreen from './screens/aboutUsScreen'
 const homeName = 'Home'
 const bookName = 'Book'
 const massName = 'Mass'
-const aboutUsName = 'AboutUs'
+const aboutUsName = 'About Us'
 
 const Tab = createBottomTabNavigator()
 
@@ -24,6 +24,7 @@ const MainContainer = () => {
             <Tab.Navigator
             initialRouteName={homeName}
             screenOptions={({ route }) => ({
+                headerShown: false,
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName
                     let rn = route.name
@@ -46,7 +47,7 @@ const MainContainer = () => {
                 activeTintColor: 'lightblue',
                 inactiveTintColor: 'grey',
                 labelStyle: { paddingBottom: 10, fontSize: 10 },
-                style: { padding: 10, height: 70 }
+                style: { padding: 20, height: 70 }
             })}
             >
                 <Tab.Screen name={homeName} component={HomeScreen} />
