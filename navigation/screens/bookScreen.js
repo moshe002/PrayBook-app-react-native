@@ -1,12 +1,13 @@
 import * as React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 
+import Header from '../components/Header'
 
 const BookScreen = ({ navigation }) => {
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={{ fontSize: 26, fontWeight: 'bold' }}>Book Screen</Text>
-        </View>
+        <ScrollView>
+            <Header param={"Book Prayers"}/>
+        </ScrollView>
     )
 }
 
