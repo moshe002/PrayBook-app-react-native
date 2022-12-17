@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, Linking, Image, Pressable } from 'react-native'
+import { View, Text, ScrollView, Linking, Image, Pressable, ActivityIndicator } from 'react-native'
 
 import Header from '../components/Header'
 
 const MassScreen = ({ navigation }) => {
 
+    const [isLoading, setIsLoading] = useState(true)
     const [video, setVideo] = useState([])
 
     useEffect(() => {   
@@ -12,12 +13,27 @@ const MassScreen = ({ navigation }) => {
     }, []);
 
     const getVideos = () => {
-        fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&channelId=UCKUsvn9QGIwiX8fjCNmetWA&maxResults=2&q=live%20mass&key=AIzaSyDWV26jvrvKzoLMky6RLHJS8xELSvONIj8`)
-        .then((res) => res.json())
-        .then((data) => {
-            console.log(data.items)
-            setVideo(data.items)
-        })
+        try {
+            fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&channelId=UCKUsvn9QGIwiX8fjCNmetWA&maxResults=2&q=live%20mass&key=AIzaSyDWV26jvrvKzoLMky6RLHJS8xELSvONIj8`)
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data.items)
+                setVideo(data.items)
+                setIsLoading(false)
+            })
+        }
+        catch (error) {
+            console.error(error)
+        }
+    }
+
+    if (isLoading) {
+        return (
+            <View className="mt-40">
+                <ActivityIndicator size='large' animating={true} color='blue' />
+                <Text className="text-black text-center text-xl mt-20">Loading...</Text>
+            </View>
+        )
     }
 
     return (

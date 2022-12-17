@@ -1,6 +1,5 @@
-import * as React from 'react'
-import { View, Text, ScrollView } from 'react-native'
-import Pressable from 'react-native/Libraries/Components/Pressable/Pressable'
+import React from 'react'
+import { View, ScrollView, Text, Pressable } from 'react-native'
 
 import Header from '../components/Header'
 import Baptism from '../components/forms/baptism'
@@ -10,15 +9,32 @@ import Forthedead from '../components/forms/ftd'
 import Thanksgiving from '../components/forms/thanksgiving'
 
 const BookScreen = ({ navigation }) => {
+
+    const choices = [
+        'Baptism', 
+        'Fiesta', 
+        'Mass for the Dead', 
+        'Wedding', 
+        'Thanksgiving Prayer'
+    ]
+
     return (
         <ScrollView>
             <Header param={"Book Prayers"}/>
-            <View className="border-2 mt-10 flex flex-wrap">
-                <Pressable><Text className="text-black text-lg">Baptism</Text></Pressable>
-                <Pressable><Text className="text-black text-lg">Fiesta</Text></Pressable>
-                <Pressable><Text className="text-black text-lg">Mass for the Dead</Text></Pressable>
-                <Pressable><Text className="text-black text-lg ">Thanksgiving Prayer</Text></Pressable>
-                <Pressable><Text className="text-black text-lg">Wedding</Text></Pressable>
+            <View className="border-2 p-5 flex items-center justify-evenly">
+                {
+                    choices.map((choice) => {
+                        return (
+                            <View key={Math.random()} className="border-2 flex justify-center items-center w-40">
+                                <Pressable>
+                                    <Text className="text-black">
+                                        {choice}
+                                    </Text>
+                                </Pressable>
+                            </View>
+                        )
+                    })
+                }
             </View>
         </ScrollView>
     )
