@@ -3,8 +3,8 @@ import React from 'react'
 
 const wedding = () => {
   return (
-    <View>
-      <Text>wedding</Text>
+    <View className="mt-10">
+      <Text className="text-blue-400 text-xl text-center font-bold">Wedding Form</Text>
     </View>
   )
 }

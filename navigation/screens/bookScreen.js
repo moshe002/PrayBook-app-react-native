@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, ScrollView, Text, Pressable } from 'react-native'
 
 import Header from '../components/Header'
@@ -10,6 +10,8 @@ import Thanksgiving from '../components/forms/thanksgiving'
 
 const BookScreen = ({ navigation }) => {
 
+    const [isRendered, setIsRendered] = useState()
+
     const choices = [
         'Baptism', 
         'Fiesta', 
@@ -18,16 +20,23 @@ const BookScreen = ({ navigation }) => {
         'Thanksgiving Prayer'
     ]
 
+    handlePress = (index) => {
+        setIsRendered(index)
+    }
+
     return (
         <ScrollView>
             <Header param={"Book Prayers"}/>
-            <View className="border-2 p-5 flex items-center justify-evenly">
+            <View className="mt-5 p-3">
+                <Text className="text-center text-black">Choose what Prayer or Event you want to book</Text>
+            </View>
+            <View className="p-3 pt-10 flex-1 flex-row flex-wrap justify-around gap-3">
                 {
-                    choices.map((choice) => {
+                    choices.map((choice, index) => {
                         return (
-                            <View key={Math.random()} className="border-2 flex justify-center items-center w-40">
-                                <Pressable>
-                                    <Text className="text-black">
+                            <View key={index} className="p-5 w-40 rounded-xl bg-blue-400">
+                                <Pressable onPress={() => this.handlePress(index)}>
+                                    <Text className="text-white font-semibold text-center">
                                         {choice}
                                     </Text>
                                 </Pressable>
@@ -36,6 +45,11 @@ const BookScreen = ({ navigation }) => {
                     })
                 }
             </View>
+            { isRendered === 0 && <Baptism /> }
+            { isRendered === 1 && <Fiesta /> }
+            { isRendered === 2 && <Forthedead /> }
+            { isRendered === 3 && <Wedding /> }
+            { isRendered === 4 && <Thanksgiving /> }
         </ScrollView>
     )
 }

@@ -3,8 +3,8 @@ import React from 'react'
 
 const ftd = () => {
   return (
-    <View>
-      <Text>for the dead</Text>
+    <View className="mt-10">
+      <Text className="text-blue-400 text-xl text-center font-bold">Mass for the Dead Form</Text>
     </View>
   )
 }

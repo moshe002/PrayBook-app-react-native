@@ -3,8 +3,8 @@ import React from 'react'
 
 const fiesta = () => {
   return (
-    <View>
-      <Text>fiesta</Text>
+    <View className="mt-10">
+      <Text className="text-blue-400 text-xl text-center font-bold">Fiesta Form</Text>
     </View>
   )
 }

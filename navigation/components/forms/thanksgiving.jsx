@@ -3,8 +3,8 @@ import React from 'react'
 
 const thanksgiving = () => {
   return (
-    <View>
-      <Text>thanksgiving</Text>
+    <View className="mt-10">
+      <Text className="text-blue-400 text-xl text-center font-bold">Thanksgiving Prayer Form</Text>
     </View>
   )
 }
