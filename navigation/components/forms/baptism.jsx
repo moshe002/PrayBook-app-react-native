@@ -1,31 +1,31 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet  } from 'react-native'
+import { View, Text, TextInput } from 'react-native'
 import React from 'react'
-import { useForm } from 'react-hook-form'
-import * as yup from 'yup'
+import { useForm, Controller } from 'react-hook-form'
+
+import SubmitButton from '../submitButton'
 
 const baptism = () => {
 
-  const validationSchema = yup.object().shape({
-    completeNameOfChild: yup.string().required('Name is required!'),
-    birthdateOfChild: yup.string().required(),
-    ageOfChild: yup.string(),
-    birthplaceOfChild: yup.string(),
-    nameOfFather: yup.string(),
-    nameOfMother: yup.string(),
-    contactNumOfParents: yup.string(),
-    completeHomeAddress: yup.string(),
-    numberOfParticipants: yup.string(),
-    scheduleDay: yup.string(),
-    scheduleTime: yup.string()
-  })
-
-  const { handleSubmit, register, errors } = useForm({
-    validationSchema,
-  })
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      CompleteNameOfChild: '',
+      AgeOfChild: '',
+      BirthdateOfChild: '',
+      BirthplaceOfChild: '',
+      Father: '',
+      Mother: '',
+      CompleteAddress: '',
+      ContactNumber: '',
+      NumberOfParticipants: '',
+      DaySchedule: '',
+      TimeSchedule: ''
+    }
+  });
 
   const onSubmit = (formData) => {
     //on submit to firebase here
-    //console.log('hello world')
+    console.log(formData)
+    //console.log('hello baptism')
   }
 
   return (
@@ -34,83 +34,213 @@ const baptism = () => {
       <View className="mt-5">
         <View className="p-3">
           <Text className="text-black text-lg text-center font-semibold">Child Details:</Text>
-          <TextInput 
-            placeholder='Complete Name of the Child: '
-            {...register("completeNameOfChild")}
-            keyboardType='default'
-            name="completeNameOfChild"
+          <Controller 
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput 
+              placeholder='Complete Name of the Child:'
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              keyboardType='default'
+            />
+          )}
+          name='CompleteNameOfChild'
           />
-          <TextInput 
-            placeholder='Age of Child: '
-            {...register("ageOfChild")}
-            keyboardType='number-pad'
+          {errors.CompleteNameOfChild && <Text className="text-center text-red-400">This is required.</Text>}
+          {/*--------------------------------------------------------------*/}
+          <Controller 
+          control={control}
+          rules={{
+            required: true,
+            maxLength: 2,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput 
+              placeholder='Age of Child:'
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              keyboardType='number-pad'
+            />
+          )}
+          name='AgeOfChild'
           />
-          <TextInput 
-            placeholder='Birthdate of Child: '
-            {...register("birthdateOfChild")}
-            keyboardType='default'
+          {errors.AgeOfChild && <Text className="text-center text-red-400">This is required and will only accept 2 digits.</Text>}
+          {/*--------------------------------------------------------------*/}
+          <Controller 
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput 
+              placeholder='Birthdate of Child:'
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              keyboardType='default'
+            />
+          )}
+          name='BirthdateOfChild'
           />
-          <TextInput 
-            placeholder='Birthplace of Child: '
-            {...register("birthplaceOfChild")}
-            keyboardType='default'
+          {errors.BirthdateOfChild && <Text className="text-center text-red-400">This is required.</Text>}
+          {/*--------------------------------------------------------------*/}
+          <Controller 
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput 
+              placeholder='Birthplace of Child:'
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              keyboardType='default'
+            />
+          )}
+          name='BirthplaceOfChild'
           />
+          {errors.BirthplaceOfChild && <Text className="text-center text-red-400">This is required.</Text>}
         </View>
         <View className="p-3">
           <Text className="text-black text-lg text-center font-semibold">Parents Details:</Text>
-          <TextInput 
-            placeholder='Complete Name of Father: '
-            {...register("nameOfFather")}
-            keyboardType='default'
+          <Controller 
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput 
+              placeholder='Name of Father:'
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              keyboardType='default'
+            />
+          )}
+          name='Father'
           />
-          <TextInput 
-            placeholder='Complete Name of Mother: '
-            {...register("nameOfMother")}
-            keyboardType='default'
+          {errors.Father && <Text className="text-center text-red-400">This is required.</Text>}
+          {/*--------------------------------------------------------------*/}
+          <Controller 
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput 
+              placeholder='Name of Mother:'
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              keyboardType='default'
+            />
+          )}
+          name='Mother'
           />
-          <TextInput 
-            placeholder='Contact Number of the Parents: '
-            {...register("contactNumOfParents")}
-            keyboardType='number-pad'
+          {errors.Mother && <Text className="text-center text-red-400">This is required.</Text>}
+          {/*--------------------------------------------------------------*/}
+          <Controller 
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput 
+              placeholder='Complete Address of the Parents:'
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              keyboardType='default'
+            />
+          )}
+          name='CompleteAddress'
           />
-          <TextInput 
-            placeholder='Complete Home Address of the Parents: '
-            {...register("completeHomeAddress")}
-            keyboardType='default'
+          {errors.CompleteAddress && <Text className="text-center text-red-400">This is required.</Text>}
+          {/*--------------------------------------------------------------*/}
+          <Controller 
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput 
+              placeholder='Contact Number:'
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              keyboardType='number-pad'
+            />
+          )}
+          name='ContactNumber'
           />
+          {errors.ContactNumber && <Text className="text-center text-red-400">This is required.</Text>}
         </View>
         <View className="p-3">
           <Text className="text-black text-lg text-center font-semibold">Other Details:</Text>
-          <TextInput 
-            placeholder='Number of Participants: '
-            {...register("numberOfParticipants")}
-            keyboardType='number-pad'
+          <Controller 
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput 
+              placeholder='Number of Participants:'
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              keyboardType='number-pad'
+            />
+          )}
+          name='NumberOfParticipants'
           />
-          <TextInput 
-            placeholder='Schedule Day: '
-            {...register("scheduleDay")}
-            keyboardType='default'
+          {errors.NumberOfParticipants && <Text className="text-center text-red-400">This is required.</Text>}
+          {/*--------------------------------------------------------------*/}
+          <Controller 
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput 
+              placeholder='Schedule (Day):'
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              keyboardType='default'
+            />
+          )}
+          name='DaySchedule'
           />
-          <TextInput 
-            placeholder='Schedule Time: '
-            {...register("scheduleTime")}
-            keyboardType='default'
+          {errors.DaySchedule && <Text className="text-center text-red-400">This is required.</Text>}
+          {/*--------------------------------------------------------------*/}
+          <Controller 
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput 
+              placeholder='Schedule (Time):'
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              keyboardType='default'
+            />
+          )}
+          name='TimeSchedule'
           />
-          <View className="flex justify-center items-center mt-5 mb-5">
-            <TouchableOpacity className="p-3 w-1/2 rounded-xl bg-blue-400" onPress={handleSubmit(onSubmit)}>
-              <Text className="text-center text-lg text-white font-semibold">Submit</Text>
-            </TouchableOpacity>
-          </View>
+          {errors.TimeSchedule && <Text className="text-center text-red-400">This is required.</Text>}
         </View>
+        <SubmitButton handle={handleSubmit} submit={onSubmit} />
       </View>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  focused: {
-    className: 'focus-bg-blue-500',
-  },
-});
 
 export default baptism
