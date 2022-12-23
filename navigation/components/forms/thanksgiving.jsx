@@ -1,6 +1,9 @@
-import { View, Text, TextInput } from 'react-native'
+import { View, Text, TextInput, Alert } from 'react-native'
 import React from 'react'
 import { useForm, Controller } from 'react-hook-form'
+
+import { collection, addDoc } from 'firebase/firestore'
+import { db } from '../../firebase/firebase-config'
 
 import SubmitButton from '../submitButton'
 
@@ -8,16 +11,32 @@ const thanksgiving = () => {
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
-      Name: '',
+      SenderName: '',
       ContactNumber: '',
-      CompleteAddress: '',
-      ThanksgivingPrayer: '',
+      SenderAddress: '',
+      PrayerReason: '',
     }
   });
 
-  const onSubmit = (formData) => {
+  const userCollectionRef = collection(db, "thanksgiving") 
+
+  const onSubmit = async (formData) => {
     //on submit to firebase here
     console.log(formData)
+    Alert.alert(
+      '',
+      'Form has been submitted, Thank you!',
+      [
+        // {
+        //   text: 'Cancel',
+        //   onPress: () => console.log('Cancel Pressed'),
+        //   style: 'cancel',
+        // },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ],
+      {cancelable: false},
+    )
+    await addDoc(userCollectionRef, formData)
     //console.log('hello thanksgiving')
   }
 
@@ -41,9 +60,9 @@ const thanksgiving = () => {
               keyboardType='default'
             />
           )}
-          name='Name'
+          name='SenderName'
           />
-          {errors.Name && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.SenderName && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -78,9 +97,9 @@ const thanksgiving = () => {
               keyboardType='default'
             />
           )}
-          name='CompleteAddress'
+          name='SenderAddress'
           />
-          {errors.CompleteAddress && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.SenderAddress && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -99,9 +118,9 @@ const thanksgiving = () => {
               numberOfLines={5}
             />
           )}
-          name='ThanksgivingPrayer'
+          name='PrayerReason'
           />
-          {errors.ThanksgivingPrayer && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.PrayerReason && <Text className="text-center text-red-400">This is required.</Text>}
         </View>
         <SubmitButton handle={handleSubmit} submit={onSubmit} />
       </View>

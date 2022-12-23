@@ -1,4 +1,4 @@
-import { View, Text, TextInput } from 'react-native'
+import { View, Text, TextInput, Alert } from 'react-native'
 import React from 'react'
 import { useForm, Controller } from 'react-hook-form'
 
@@ -8,23 +8,36 @@ const baptism = () => {
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
-      CompleteNameOfChild: '',
+      NameOfChild: '',
       AgeOfChild: '',
       BirthdateOfChild: '',
       BirthplaceOfChild: '',
-      Father: '',
-      Mother: '',
-      CompleteAddress: '',
-      ContactNumber: '',
+      NameOfFather: '',
+      NameOfMother: '',
+      AddressOfParents: '',
+      ContactNumberOfParents: '',
       NumberOfParticipants: '',
-      DaySchedule: '',
-      TimeSchedule: ''
+      ScheduleDay: '',
+      ScheduleTime: ''
     }
   });
 
   const onSubmit = (formData) => {
     //on submit to firebase here
     console.log(formData)
+    Alert.alert(
+      '',
+      'Form has been submitted, Thank you!',
+      [
+        // {
+        //   text: 'Cancel',
+        //   onPress: () => console.log('Cancel Pressed'),
+        //   style: 'cancel',
+        // },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ],
+      {cancelable: false},
+    )
     //console.log('hello baptism')
   }
 
@@ -48,9 +61,9 @@ const baptism = () => {
               keyboardType='default'
             />
           )}
-          name='CompleteNameOfChild'
+          name='NameOfChild'
           />
-          {errors.CompleteNameOfChild && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.NameOfChild && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -123,9 +136,9 @@ const baptism = () => {
               keyboardType='default'
             />
           )}
-          name='Father'
+          name='NameOfFather'
           />
-          {errors.Father && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.NameOfFather && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -141,9 +154,9 @@ const baptism = () => {
               keyboardType='default'
             />
           )}
-          name='Mother'
+          name='NameOfMother'
           />
-          {errors.Mother && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.NameOfMother && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -159,9 +172,9 @@ const baptism = () => {
               keyboardType='default'
             />
           )}
-          name='CompleteAddress'
+          name='AddressOfParents'
           />
-          {errors.CompleteAddress && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.AddressOfParents && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -177,9 +190,9 @@ const baptism = () => {
               keyboardType='number-pad'
             />
           )}
-          name='ContactNumber'
+          name='ContactNumberOfParents'
           />
-          {errors.ContactNumber && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.ContactNumberOfParents && <Text className="text-center text-red-400">This is required.</Text>}
         </View>
         <View className="p-3">
           <Text className="text-black text-lg text-center font-semibold">Other Details:</Text>
@@ -215,9 +228,9 @@ const baptism = () => {
               keyboardType='default'
             />
           )}
-          name='DaySchedule'
+          name='ScheduleDay'
           />
-          {errors.DaySchedule && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.ScheduleDay && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -233,9 +246,9 @@ const baptism = () => {
               keyboardType='default'
             />
           )}
-          name='TimeSchedule'
+          name='ScheduleTime'
           />
-          {errors.TimeSchedule && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.ScheduleTime && <Text className="text-center text-red-400">This is required.</Text>}
         </View>
         <SubmitButton handle={handleSubmit} submit={onSubmit} />
       </View>
