@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "209500712723",
+    "project_id": "praybook-4b0a1",
+    "storage_bucket": "praybook-4b0a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:209500712723:android:8ab77e7544b33346feb4e6",
+        "android_client_info": {
+          "package_name": "com.praybookapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "209500712723-uhi36jejk91uc5tn7am30cjdr1dcn75m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4hEaqoue25yFp6ElC2236wkT-tT_Eefg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "209500712723-uhi36jejk91uc5tn7am30cjdr1dcn75m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
