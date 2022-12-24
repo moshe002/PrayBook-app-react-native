@@ -2,13 +2,13 @@ import { View, Text, TextInput, Alert } from 'react-native'
 import React from 'react'
 import { useForm, Controller } from 'react-hook-form'
 
-import { collection, addDoc } from 'firebase/firestore'
+//import * as firebase from 'firebase'
 import { db } from '../../firebase/firebase-config'
 
 import SubmitButton from '../submitButton'
 
 const thanksgiving = () => {
-
+  
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       SenderName: '',
@@ -18,11 +18,15 @@ const thanksgiving = () => {
     }
   });
 
-  const userCollectionRef = collection(db, "thanksgiving") 
-
   const onSubmit = async (formData) => {
-    //on submit to firebase here
-    console.log(formData)
+    try {
+      //on submit to firebase here
+      //const db = firebase.firestore()
+      await db.collection('thanksgiving').add(formData)
+      console.log("data submitted successfully!")
+    } catch (error) {
+      console.error(error)
+    }
     Alert.alert(
       '',
       'Form has been submitted, Thank you!',
@@ -36,7 +40,7 @@ const thanksgiving = () => {
       ],
       {cancelable: false},
     )
-    await addDoc(userCollectionRef, formData)
+    console.log(formData)    
     //console.log('hello thanksgiving')
   }
 
