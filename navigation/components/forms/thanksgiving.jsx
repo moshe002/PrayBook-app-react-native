@@ -1,14 +1,17 @@
-import { View, Text, TextInput, Alert } from 'react-native'
-import React from 'react'
+import { View, Text, TextInput, Alert, ActivityIndicator } from 'react-native'
+import React, { useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 
-//import * as firebase from 'firebase'
 import { db } from '../../firebase/firebase-config'
+import { collection, addDoc } from 'firebase/firestore'
 
 import SubmitButton from '../submitButton'
 
 const thanksgiving = () => {
   
+  const [isLoading, setIsLoading] = useState(false)
+  const [isConnected, setIsConnected] = useState(false)
+
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       SenderName: '',
@@ -18,15 +21,7 @@ const thanksgiving = () => {
     }
   });
 
-  const onSubmit = async (formData) => {
-    try {
-      //on submit to firebase here
-      //const db = firebase.firestore()
-      await db.collection('thanksgiving').add(formData)
-      console.log("data submitted successfully!")
-    } catch (error) {
-      console.error(error)
-    }
+  const onSubmit = async (formData) => { 
     Alert.alert(
       '',
       'Form has been submitted, Thank you!',
@@ -39,9 +34,19 @@ const thanksgiving = () => {
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ],
       {cancelable: false},
-    )
-    console.log(formData)    
-    //console.log('hello thanksgiving')
+    ) 
+    try {
+      setIsLoading(true)
+      const docRef = await addDoc(collection(db, "thanksgiving"), formData) 
+      //on submit to firebase here 
+      console.log("document written, ID: ", docRef.id)
+      console.log("data submitted successfully!")
+      setIsLoading(false)
+      console.log(formData)    
+    } catch (error) {
+      console.error(error)
+      setIsConnected(true)
+    }
   }
 
   return (
@@ -66,7 +71,7 @@ const thanksgiving = () => {
           )}
           name='SenderName'
           />
-          {errors.SenderName && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.SenderName && <Text className="text-center text-red-400">This is required.</Text> }
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -126,6 +131,8 @@ const thanksgiving = () => {
           />
           {errors.PrayerReason && <Text className="text-center text-red-400">This is required.</Text>}
         </View>
+        { isLoading && <ActivityIndicator size="large" /> }
+        { isConnected && <Text className="text-center">Form not submitted. Please check your connection and try again.</Text> }
         <SubmitButton handle={handleSubmit} submit={onSubmit} />
       </View>
     </View>

@@ -1,41 +1,70 @@
-import { View, Text, TextInput } from 'react-native'
-import React from 'react'
+import { View, Text, TextInput, Alert, ActivityIndicator } from 'react-native'
+import React, { useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
+
+import { db } from '../../firebase/firebase-config'
+import { collection, addDoc } from 'firebase/firestore'
 
 import SubmitButton from '../submitButton'
 
 const wedding = () => {
 
+  const [isLoading, setIsLoading] = useState(false)
+  const [isConnected, setIsConnected] = useState(false)
+
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
-      GroomName: '',
-      BrideName: '',
-      GroomAge: '',
-      BrideAge: '',
-      BrideAddress: '',
-      GroomAddress: '',
-      BrideMother: '',
-      BrideFather: '',
-      GroomFather: '',
-      GroomMother: '',
-      AddressBrideParents: '',
-      AddressGroomParents: '',
+      NameOfGroom: '',
+      NameOfBride: '',
+      AgeOfGroom: '',
+      AgeOfBride: '',
+      AddressOfBride: '',
+      AddressOfGroom: '',
+      MotherOfBride: '',
+      FatherOfBride: '',
+      FatherOfGroom: '',
+      MotherOfGroom: '',
+      AddressOfBrideParents: '',
+      AddressOfGroomParents: '',
       FirstReading: '',
       SecondReading: '',
       ResponsorialPsalm: '',
       RingBearer: '',
       MoneyBearer: '',
       BibleBearer: '',
-      ContactNumber: '',
-      DaySchedule: '',
-      TimeSchedule: '',
+      FlowerGirls: '',
+      BrideGroomPhoneNumber: '',
+      ScheduleDay: '',
+      ScheduleTime: '',
     }
   })
 
-  const onSubmit = (formData) => {
-    //on submit to firebase here
-    console.log(formData)
-    //console.log('hello wedding')
+  const onSubmit = async (formData) => { 
+    Alert.alert(
+      '',
+      'Form has been submitted, Thank you!',
+      [
+        // {
+        //   text: 'Cancel',
+        //   onPress: () => console.log('Cancel Pressed'),
+        //   style: 'cancel',
+        // },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ],
+      {cancelable: false},
+    ) 
+    try {
+      setIsLoading(true)
+      const docRef = await addDoc(collection(db, "wedding"), formData) 
+      //on submit to firebase here 
+      console.log("document written, ID: ", docRef.id)
+      console.log("data submitted successfully!")
+      setIsLoading(false)
+      console.log(formData)    
+    } catch (error) {
+      console.error(error)
+      setIsConnected(true)
+    }
   }
 
   return (
@@ -58,9 +87,9 @@ const wedding = () => {
               keyboardType='default'
             />
           )}
-          name='GroomName'
+          name='NameOfGroom'
           />
-          {errors.GroomName && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.NameOfGroom && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -76,9 +105,9 @@ const wedding = () => {
               keyboardType='default'
             />
           )}
-          name='BrideName'
+          name='NameOfBride'
           />
-          {errors.BrideName && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.NameOfBride && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -95,9 +124,9 @@ const wedding = () => {
               keyboardType='number-pad'
             />
           )}
-          name='GroomAge'
+          name='AgeOfGroom'
           />
-          {errors.GroomAge && <Text className="text-center text-red-400">This is required and will accept 2 digits only.</Text>}
+          {errors.AgeOfGroom && <Text className="text-center text-red-400">This is required and will accept 2 digits only.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -114,9 +143,9 @@ const wedding = () => {
               keyboardType='number-pad'
             />
           )}
-          name='BrideAge'
+          name='AgeOfBride'
           />
-          {errors.BrideAge && <Text className="text-center text-red-400">This is required and will accept 2 digits only.</Text>}
+          {errors.AgeOfBride && <Text className="text-center text-red-400">This is required and will accept 2 digits only.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -132,9 +161,9 @@ const wedding = () => {
               keyboardType='default'
             />
           )}
-          name='BrideAddress'
+          name='AddressOfBride'
           />
-          {errors.BrideAddress && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.AddressOfBride && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -150,9 +179,9 @@ const wedding = () => {
               keyboardType='default'
             />
           )}
-          name='GroomAddress'
+          name='AddressOfGroom'
           />
-          {errors.GroomAddress && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.AddressOfGroom && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
         </View>
         <View className="p-3">
@@ -171,9 +200,9 @@ const wedding = () => {
               keyboardType='default'
             />
           )}
-          name='BrideMother'
+          name='MotherOfBride'
           />
-          {errors.BrideMother && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.MotherOfBride && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -189,9 +218,9 @@ const wedding = () => {
               keyboardType='default'
             />
           )}
-          name='BrideFather'
+          name='FatherOfBride'
           />
-          {errors.BrideFather && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.FatherOfBride && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -207,9 +236,9 @@ const wedding = () => {
               keyboardType='default'
             />
           )}
-          name='GroomFather'
+          name='FatherOfGroom'
           />
-          {errors.GroomFather && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.FatherOfGroom && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -225,9 +254,9 @@ const wedding = () => {
               keyboardType='default'
             />
           )}
-          name='GroomMother'
+          name='MotherOfGroom'
           />
-          {errors.GroomMother && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.MotherOfGroom && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -243,9 +272,9 @@ const wedding = () => {
               keyboardType='default'
             />
           )}
-          name='AddressBrideParents'
+          name='AddressOfBrideParents'
           />
-          {errors.AddressBrideParents && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.AddressOfBrideParents && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -261,9 +290,9 @@ const wedding = () => {
               keyboardType='default'
             />
           )}
-          name='AddressGroomParents'
+          name='AddressOfGroomParents'
           />
-          {errors.AddressGroomParents && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.AddressOfGroomParents && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
         </View>
         <View className="p-3">
@@ -413,9 +442,9 @@ const wedding = () => {
                 keyboardType='number-pad'
               />
             )}
-            name='ContactNumber'
+            name='BrideGroomPhoneNumber'
             />
-            {errors.ContactNumber && <Text className="text-center text-red-400">This is required and will accept 11 digits only.</Text>}
+            {errors.BrideGroomPhoneNumber && <Text className="text-center text-red-400">This is required and will accept 11 digits only.</Text>}
             {/*--------------------------------------------------------------*/}
             <Controller 
             control={control}
@@ -431,9 +460,9 @@ const wedding = () => {
                 keyboardType='default'
               />
             )}
-            name='DaySchedule'
+            name='ScheduleDay'
             />
-            {errors.DaySchedule && <Text className="text-center text-red-400">This is required.</Text>}
+            {errors.ScheduleDay && <Text className="text-center text-red-400">This is required.</Text>}
             {/*--------------------------------------------------------------*/}
             <Controller 
             control={control}
@@ -449,11 +478,13 @@ const wedding = () => {
                 keyboardType='default'
               />
             )}
-            name='TimeSchedule'
+            name='ScheduleTime'
             />
-            {errors.TimeSchedule && <Text className="text-center text-red-400">This is required.</Text>}
+            {errors.ScheduleTime && <Text className="text-center text-red-400">This is required.</Text>}
             {/*--------------------------------------------------------------*/}
         </View>
+        { isLoading && <ActivityIndicator size="large" /> }
+        { isConnected && <Text className="text-center">Form not submitted. Please check your connection and try again.</Text> }
         <SubmitButton handle={handleSubmit} submit={onSubmit}/>
       </View>
     </View>

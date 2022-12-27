@@ -1,29 +1,57 @@
-import { View, Text, TextInput } from 'react-native'
-import React from 'react'
+import { View, Text, TextInput, Alert, ActivityIndicator } from 'react-native'
+import React, { useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
+
+import { db } from '../../firebase/firebase-config'
+import { collection, addDoc } from 'firebase/firestore'
 
 import SubmitButton from '../submitButton'
 
 const ftd = () => {
 
+  const [isLoading, setIsLoading] = useState(false)
+  const [isConnected, setIsConnected] = useState(false)
+
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
-      DeceasedName: '',
+      NameOfDeceased: '',
       CauseOfDeath: '',
       AgeOfDeceased: '',
       AddressOfDeceased: '',
-      LocationBury: '',
+      BurialLocation: '',
       NumberOfParticipants: '',
-      ContactNumber: '',
-      DaySchedule: '',
-      TimeSchedule: '',
+      FamilyContactNumber: '',
+      ScheduleDay: '',
+      ScheduleTime: '',
     }
   })
 
-  const onSubmit = (formData) => {
-    //on submit to firebase here
-    console.log(formData)
-    //console.log('hello ftd')
+  const onSubmit = async (formData) => { 
+    Alert.alert(
+      '',
+      'Form has been submitted, Thank you!',
+      [
+        // {
+        //   text: 'Cancel',
+        //   onPress: () => console.log('Cancel Pressed'),
+        //   style: 'cancel',
+        // },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ],
+      {cancelable: false},
+    ) 
+    try {
+      setIsLoading(true)
+      const docRef = await addDoc(collection(db, "forthedead"), formData) 
+      //on submit to firebase here 
+      console.log("document written, ID: ", docRef.id)
+      console.log("data submitted successfully!")
+      setIsLoading(false)
+      console.log(formData)    
+    } catch (error) {
+      console.error(error)
+      setIsConnected(true)
+    }
   }
 
   return (
@@ -46,9 +74,9 @@ const ftd = () => {
               keyboardType='default'
             />
           )}
-          name='DeceasedName'
+          name='NameOfDeceased'
           />
-          {errors.DeceasedName && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.NameOfDeceased && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -119,9 +147,9 @@ const ftd = () => {
               keyboardType='default'
             />
           )}
-          name='LocationBury'
+          name='BurialLocation'
           />
-          {errors.LocationBury && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.BurialLocation && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
         </View>
         <View className="p-3">
@@ -160,9 +188,9 @@ const ftd = () => {
               keyboardType='number-pad'
             />
           )}
-          name='ContactNumber'
+          name='FamilyContactNumber'
           />
-          {errors.ContactNumber && <Text className="text-center text-red-400">This is required and will only accept 11 digits.</Text>}
+          {errors.FamilyContactNumber && <Text className="text-center text-red-400">This is required and will only accept 11 digits.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -178,9 +206,9 @@ const ftd = () => {
               keyboardType='default'
             />
           )}
-          name='DaySchedule'
+          name='ScheduleDay'
           />
-          {errors.DaySchedule && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.ScheduleDay && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
           <Controller 
           control={control}
@@ -196,11 +224,13 @@ const ftd = () => {
               keyboardType='default'
             />
           )}
-          name='TimeSchedule'
+          name='ScheduleTime'
           />
-          {errors.TimeSchedule && <Text className="text-center text-red-400">This is required.</Text>}
+          {errors.ScheduleTime && <Text className="text-center text-red-400">This is required.</Text>}
           {/*--------------------------------------------------------------*/}
         </View>
+        { isLoading && <ActivityIndicator size="large" /> }
+        { isConnected && <Text className="text-center">Form not submitted. Please check your connection and try again.</Text> }
         <SubmitButton handle={handleSubmit} submit={onSubmit}/>
       </View>
     </View>

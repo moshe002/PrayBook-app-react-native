@@ -1,10 +1,16 @@
-import { View, Text, TextInput, Alert } from 'react-native'
-import React from 'react'
+import { View, Text, TextInput, Alert, ActivityIndicator } from 'react-native'
+import React, { useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
+
+import { db } from '../../firebase/firebase-config'
+import { collection, addDoc } from 'firebase/firestore'
 
 import SubmitButton from '../submitButton'
 
 const baptism = () => {
+
+  const [isLoading, setIsLoading] = useState(false)
+  const [isConnected, setIsConnected] = useState(false)
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
@@ -22,9 +28,7 @@ const baptism = () => {
     }
   });
 
-  const onSubmit = (formData) => {
-    //on submit to firebase here
-    console.log(formData)
+  const onSubmit = async (formData) => { 
     Alert.alert(
       '',
       'Form has been submitted, Thank you!',
@@ -37,8 +41,19 @@ const baptism = () => {
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ],
       {cancelable: false},
-    )
-    //console.log('hello baptism')
+    ) 
+    try {
+      setIsLoading(true)
+      const docRef = await addDoc(collection(db, "baptismal"), formData) 
+      //on submit to firebase here 
+      console.log("document written, ID: ", docRef.id)
+      console.log("data submitted successfully!")
+      setIsLoading(false)
+      console.log(formData)    
+    } catch (error) {
+      console.error(error)
+      setIsConnected(true)
+    }
   }
 
   return (
@@ -250,6 +265,8 @@ const baptism = () => {
           />
           {errors.ScheduleTime && <Text className="text-center text-red-400">This is required.</Text>}
         </View>
+        { isLoading && <ActivityIndicator size="large" /> }
+        { isConnected && <Text className="text-center">Form not submitted. Please check your connection and try again.</Text> }
         <SubmitButton handle={handleSubmit} submit={onSubmit} />
       </View>
     </View>
